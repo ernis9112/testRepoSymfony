@@ -1,0 +1,23 @@
+services:
+     client_for_api:
+        class: Guzzle\Http\Client
+
+     api_client:
+              class: InfoGoal\KickerBundle\Model\ApiClient
+              calls:
+                  - [setClient, ["@client_for_api"]]
+
+     api.query_before:
+           class: InfoGoal\KickerBundle\Model\ApiClientEvent
+           tags:
+               - { name: kernel.event_listener, event: api.query_before, method: onQueryBefore }
+
+     api.query_success:
+                class: InfoGoal\KickerBundle\Model\ApiClientEvent
+                tags:
+                    - { name: kernel.event_listener, event: api.query_success, method: onQuerySuccess }
+
+     api.query_fail:
+                class: InfoGoal\KickerBundle\Model\ApiClientEvent
+                tags:
+                    - { name: kernel.event_listener, event: api.query_fail, method: onQueryFail }
